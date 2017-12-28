@@ -58,6 +58,24 @@ stringValidationToString ( string, bool ) =
 
 
 
+-- List of Main symbols
+
+
+listOfMainSymbols : List Char
+listOfMainSymbols =
+    [ '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', ',', '.', '?', '>', '<', '+', '=', '~', '|', '/', ':', ';' ]
+
+
+
+-- List of numbers
+
+
+listOfNumbers : List Char
+listOfNumbers =
+    [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ]
+
+
+
 -- "nputValidation" function
 --  *FIRST ARGUMENT SHOULD BE NAME OF INPUT
 --  *SECOND ARGUMENT SHOULD BE STRING TO VALIDATE
