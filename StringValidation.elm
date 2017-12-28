@@ -63,12 +63,13 @@ stringValidationToString ( string, bool ) =
 --  *SECOND ARGUMENT SHOULD BE STRING TO VALIDATE
 --  *THIRD ARGUMENT SHOULD BE  LIST OF SYMBOLS WHICH MUST BE IN STRING
 --  *FOURTH ARGUMENT SHOULD BE LIST OF SYMBOLS WHICH MUST NOT BE IN STRING
---  *FIFTH ARGUMENT SHOULD BE MIN LENGTH OF STRING
---  *SIXTH ARGUMENT SHOULD BE MAX LENGTH OF STRING
+--  *FIFTH  ARGUMENT SHOULD BE BOOLEAN(Should input contain any numbers?)
+--  *SIXTH ARGUMENT SHOULD BE MIN LENGTH OF STRING
+--  *SEVENTH ARGUMENT SHOULD BE MAX LENGTH OF STRING
 
 
-inputValidation : String -> String -> List Char -> List Char -> Int -> Int -> ( String, Bool, String )
-inputValidation inputName string listOfSymbols listOfBanSymbols startPoint endPoint =
+inputValidation : String -> String -> List Char -> List Char -> Bool -> Int -> Int -> ( String, Bool, String )
+inputValidation inputName string listOfSymbols listOfBanSymbols isWithNumbers startPoint endPoint =
     let
         stringLength =
             String.length string
@@ -108,6 +109,35 @@ inputValidation inputName string listOfSymbols listOfBanSymbols startPoint endPo
             List.filter
                 (\bool -> not bool)
                 charBanValidation
+
+        numbers =
+            [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" ]
+
+        numbersCheck =
+            if isWithNumbers then
+                List.map
+                    (\number ->
+                        String.contains number string
+                    )
+                    numbers
+                    |> List.filter
+                        (\numbersListItem ->
+                            if numbersListItem == True then
+                                True
+                            else
+                                False
+                        )
+            else
+                []
+
+        resultOfNumbersCheck =
+            if isWithNumbers then
+                if List.length numbersCheck > 0 then
+                    "T"
+                else
+                    "F"
+            else
+                "T"
     in
     if stringLength <= startPoint then
         ( string, False, "Text should be no less than " ++ toString startPoint ++ " symbols " )
@@ -146,6 +176,8 @@ inputValidation inputName string listOfSymbols listOfBanSymbols startPoint endPo
             ( string, False, "Text should not contain:" ++ stringWithBanSymbols )
         else
             ( string, False, "Please, type your real " ++ inputName )
+    else if resultOfNumbersCheck == "F" then
+        ( string, False, "Should contain min 1 number" )
     else
         ( string, True, "" )
 
