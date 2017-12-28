@@ -63,7 +63,7 @@ stringValidationToString ( string, bool ) =
 
 listOfMainSymbols : List Char
 listOfMainSymbols =
-    [ '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', ',', '.', '?', '>', '<', '+', '=', '~', '|', '/', ':', ';' ]
+    [ '@', '!', '#', '$', '%', '^', '&', '*', '(', ')', ',', '.', '?', '>', '<', '+', '=', '~', '|', '/', ':', ';' ]
 
 
 
@@ -157,10 +157,16 @@ inputValidation inputName string listOfSymbols listOfBanSymbols isWithNumbers st
             else
                 "T"
     in
-    if stringLength <= startPoint then
-        ( string, False, "Text should be no less than " ++ toString startPoint ++ " symbols " )
+    if stringLength < startPoint then
+        if String.length inputName > 0 then
+            ( string, False, inputName ++ " should be no less than " ++ toString startPoint ++ " symbols " )
+        else
+            ( string, False, "Text should be no less than " ++ toString startPoint ++ " symbols " )
     else if stringLength >= endPoint then
-        ( string, False, "Text should be no bigger than " ++ toString endPoint ++ " symbols " )
+        if String.length inputName > 0 then
+            ( string, False, inputName ++ " should be no bigger than " ++ toString endPoint ++ " symbols " )
+        else
+            ( string, False, "Text should be no bigger than " ++ toString endPoint ++ " symbols " )
     else if List.length charValidation /= List.length listBoolValidation then
         let
             listOfAllSymbols =
@@ -175,7 +181,10 @@ inputValidation inputName string listOfSymbols listOfBanSymbols isWithNumbers st
             stringWithSymbols =
                 String.join ", " listOfAllSymbols
         in
-        ( string, False, "Text should include " ++ stringWithSymbols )
+        if String.length inputName > 0 then
+            ( string, False, inputName ++ " should include " ++ stringWithSymbols )
+        else
+            ( string, False, "Text should include " ++ stringWithSymbols )
     else if List.length charBanValidation /= List.length listBoolBanValidation then
         if String.length inputName == 0 then
             let
@@ -191,11 +200,17 @@ inputValidation inputName string listOfSymbols listOfBanSymbols isWithNumbers st
                 stringWithBanSymbols =
                     String.join ", " listOfAllBanSymbols
             in
-            ( string, False, "Text should not contain:" ++ stringWithBanSymbols )
+            if String.length inputName > 0 then
+                ( string, False, inputName ++ " should not contain:" ++ stringWithBanSymbols )
+            else
+                ( string, False, "Text should not contain:" ++ stringWithBanSymbols )
         else
             ( string, False, "Please, type your real " ++ inputName )
     else if resultOfNumbersCheck == "F" then
-        ( string, False, "Should contain min 1 number" )
+        if String.length inputName > 0 then
+            ( string, False, inputName ++ " contain min 1 number" )
+        else
+            ( string, False, "Text contain min 1 number" )
     else
         ( string, True, "" )
 
